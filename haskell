@@ -1,0 +1,73 @@
+//zad 7
+import Data.List(tails)
+--tails zwraca kolejne kolory jako x = x, y=ys, nastepnie sie przesuwa i bierze kolejne za x
+
+main :: IO()
+main = do
+    --print(reverseList[1,2,3,4,5])
+    --print(tabliczka)
+    --print(kombinacjaKolorow)
+    --print(kombKolorow)
+    print(append[1,2,3][4,5,6])
+    print(member 3[1,3,5,7])
+    print(lastEl[1,2,34,66])
+    print(delete 66 [1,2,34,66])
+    print(split 3 [4,1,2,46,2,9])
+    print(filter2 odd [1,2,3,4,5,6])
+     
+reverseList::[a] -> [a] --nie zmienia sie typ danych w srodku 
+reverseList [] = []
+reverseList(x:xs) = reverseList xs ++ [x] --rozbijamy na 1 el i ogon (x:xs) 
+-- ++ -> ++ [x] dodaje ten pierwszy element x na koniec odwróconej reszty.
+
+tabliczka ::[(Integer,Integer,Integer)]
+tabliczka = [(x,y,x*y) | x <- [1..12], y <- [1..12]]
+
+kolory = ["black", "white", "blue", "yellow", "red"]
+kombinacjaKolorow = [(x,y) | x <- kolory,y <- kolory,x/=y] --listcomperhension
+kombKolorow = [(x,y) | (x:ys) <- tails kolory, y <- ys] --używa tails z data.list aby nie było powtorzen
+
+member :: Eq a =>a ->  [a] -> Bool --ograniczamy a do typow ktore da sie porownac
+member _ [] = False --podloga to ignorujemy parametr
+member x(y:ys)
+  | x == y = True
+  | otherwise = member x ys -- jak nie ma to sprawdzamy w dalszej czesci
+  
+
+append :: [a] -> [a] -> [a]
+append [] m = m
+append (x:xs) m = x : append xs m -- reszta listy m to rekurencja
+
+lastEl :: [a] -> a
+lastEl [x] = x
+lastEl (_:xs) = lastEl xs (_:xs) --oznacza: ignoruj pierwszy element (_) i weź tylko ogon listy (xs)
+
+delete ::Eq a => a -> [a] -> [a]
+delete _[] = []
+delete x(y:ys)
+  | x== y= ys
+  | otherwise = y : delete x ys
+
+-- usuwanie wszystkich wystapien
+--deleteAll x [] = []
+--deleteAll x (y:ys)
+--  | x == y = deleteAll x ys
+--  | otherwise = y : deleteAll x ys
+ 
+-- zad 6e
+-- ord gwarantuje ze maja porzadek wiec moga byc porownywalne
+split :: Ord a => a-> [a] ->([a],[a]) -- jesli chcemy jedna wartosc to do krotki
+split _[] = ([],[])
+split x (y:ys)
+  | y<x = (y:l1,l2)
+  | y>x = (l1, y:l2)
+  | otherwise = (l1,l2)
+  where (l1,l2) = split x ys 
+
+--zad 7
+filter2 :: (a-> Bool) -> [a] -> [a]
+--pierwszym arg jest funkcja a zwracana jest lista przefiltrowana'
+filter2 _[] = []
+filter2 p (y:ys)
+  | p y = y: filter2 p ys -- jesli predykat zwroci tru to 
+  | otherwise = filter2 p ys
