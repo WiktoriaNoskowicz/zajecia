@@ -1,0 +1,67 @@
+Prolog kolokwium
+append([olej], [woda], [olej, woda]). -> zwraca true bo po zlaczeniu tak te listy wygladaja 
+append([olej], [woda], Co). -> pokazuje wynik zlaczenia 
+append([olej], Co, [olej, woda]). -> szuka listy ktora po zlaczeniu z olej da [olej,woda]
+
+ select(X, [1,2,3], L). -> wybiera jeden el X i zwraca reszte L
+ select(a,L,[1,2,3]) -> zwraca liste L ktorej usuniecie 'a'  da [1,2,3] 
+-> select(X, Lista, Reszta)`:
+- Wybiera element `X` z `Lista`, zostawiając `Reszta`
+%zad 3
+nwd(X,X,X).
+nwd(X,Y,NWD) :- 
+    X > Y,
+    Z is X-Y,
+    nwd(Z,Y,NWD),
+    !.
+
+nwd(X,Y,NWD) :-
+    Y>X,
+    Z is Y - X,
+    nwd(X,Z,NWD),
+    !. % jesli warunek zostanie raz spelniony to nie szukamy kolejnych rozwiazan
+
+%zad 4
+produkt(p1).
+produkt(p2).
+produkt(p3).
+
+potrzebuje(p1,s1).
+potrzebuje(p1,s2).
+
+potrzebuje(p2,s2).
+potrzebuje(p2,s3).
+
+potrzebuje(p3,s1).
+potrzebuje(p3,s3).
+potrzebuje(p3,p2).
+
+dostepny(s1).
+dostepny(s2).
+dostepny(s3).
+
+mozna_produkowac(X) :- 
+    produkt(X),
+    \+ (potrzebuje(X,S),\+ dostepny(S)).
+
+%sprawdza czy el nalezyd do listy
+nalezy(X,[X|_]) :-!. %szuka do pierwszego znalezienia 
+nalezy(X,[_|T]) :-
+    nalezy(X,T).
+
+%dlugosc oblicza dl listy i zapisuje ja w dl 
+dlugosc([],0).
+dlugosc([_|T],Dl) :- 
+    dlugosc(T,DlT),
+    Dl is DlT + 1.
+
+%zad 9 
+suma([],0).
+suma([H|T],S) :- 
+    suma(T,S1),
+    S is S1 + H.
+%zad 10
+ostatni(X, [X]). %lista ma 1 el
+ostatni(X, [_|T]) :- %jesli lista ma wiecej el to odrzucamy 1 i sprawdzamy dalej
+    ostatni(X, T).
+    
